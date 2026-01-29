@@ -16,6 +16,8 @@ public class DialogueManager : MonoBehaviour
     private Vector2 offScreenPosition;
 
     private Coroutine typingCoroutine;
+    private Pemain player;
+    private bool isPanelActive = false; // Tracks if panel is logically active/sliding in
 
     public static DialogueManager instance;
 
@@ -30,43 +32,76 @@ public class DialogueManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        player = FindAnyObjectByType<Pemain>();
+
         panelRect = dialoguePanel.GetComponent<RectTransform>();
         originalPosition = panelRect.anchoredPosition;
-        offScreenPosition = originalPosition - new Vector2(0, Screen.height);
+        offScreenPosition = originalPosition + new Vector2(0, Screen.height);
         panelRect.anchoredPosition = offScreenPosition;
 
         gameObject.SetActive(false);
         dialoguePanel.SetActive(false);
-        instance.ShowDialogue("AAAAAAAAAAAAAAAAAAAAAAA Testing <slow>slow</slow> and <fast>fast</fast> speeds.");
+        // ShowDialogue("AAAAAAAAAAAAAAAAAAAAAAA Testing <slow>slow</slow> and <fast>fast</fast> speeds.");
     }
 
-    public void ShowDialogue(string text)
+    public void ShowDialogue(string text, bool stopPlayer = false)
     {
         gameObject.SetActive(true);
         dialoguePanel.SetActive(true);
-        if (typingCoroutine != null)
+
+        player = FindAnyObjectByType<Pemain>();
+
+        if (player != null)
         {
-            StopCoroutine(typingCoroutine);
+            if (stopPlayer)
+            {
+                player.isControllable = false;
+                player.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
+            }
+            else
+            {
+                player.isControllable = true;
+            }
         }
-        typingCoroutine = StartCoroutine(PlayDialogueSequence(text));
+
+        bool skipSlideIn = isPanelActive;
+        isPanelActive = true;
+
+        StopAllCoroutines();
+        typingCoroutine = StartCoroutine(PlayDialogueSequence(text, skipSlideIn, stopPlayer));
     }
 
-    IEnumerator PlayDialogueSequence(string text)
-    {
-        // Slide In
-        yield return StartCoroutine(SlidePanel(offScreenPosition, originalPosition));
+    public event System.Action OnDialogueFinished;
 
-        // Type Text
+    IEnumerator PlayDialogueSequence(string text, bool skipSlideIn, bool stopPlayer)
+    {
+        dialogueText.text = "";
+
+        if (!skipSlideIn)
+        {
+            yield return StartCoroutine(SlidePanel(offScreenPosition, originalPosition));
+        }
+        else
+        {
+            panelRect.anchoredPosition = originalPosition;
+        }
+
         yield return StartCoroutine(TypeSentence(text));
 
-        // Wait
         yield return new WaitForSeconds(autoHideDelay);
 
-        // Slide Out
         yield return StartCoroutine(SlidePanel(originalPosition, offScreenPosition));
 
+        isPanelActive = false;
         dialoguePanel.SetActive(false);
         gameObject.SetActive(false);
+
+        if (stopPlayer && player != null)
+        {
+            player.isControllable = true;
+        }
+
+        OnDialogueFinished?.Invoke();
     }
 
     IEnumerator SlidePanel(Vector2 start, Vector2 end)
@@ -75,7 +110,6 @@ public class DialogueManager : MonoBehaviour
         while (elapsedTime < slideDuration)
         {
             float t = elapsedTime / slideDuration;
-            // Ease In Out Sine
             float easedT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2;
 
             panelRect.anchoredPosition = Vector2.Lerp(start, end, easedT);
@@ -95,7 +129,6 @@ public class DialogueManager : MonoBehaviour
         {
             if (sentence[i] == '<')
             {
-                // Find closing bracket
                 int endIndex = sentence.IndexOf('>', i);
                 if (endIndex != -1)
                 {
@@ -137,8 +170,8 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text += sentence[i];
 
             float currentSpeed = typingSpeed;
-            if (isSlow) currentSpeed *= 5.0f; // Slower means higher delay
-            if (isFast) currentSpeed *= 0.5f; // Faster means lower delay
+            if (isSlow) currentSpeed *= 5.0f;
+            if (isFast) currentSpeed *= 0.5f;
 
             yield return new WaitForSeconds(currentSpeed);
         }

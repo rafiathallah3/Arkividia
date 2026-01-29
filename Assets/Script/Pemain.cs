@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -30,7 +31,15 @@ public class Pemain : MonoBehaviour
 
     private Rigidbody2D rb;
     private bool isGrounded;
+    public bool IsGrounded => isGrounded;
     private float horizontalInput;
+
+    // Control State
+    public bool isControllable = true;
+
+    public GameObject deathParticleEffect;
+
+    Transform sprite;
 
     // Dash State
     private bool isDashing;
@@ -42,10 +51,21 @@ public class Pemain : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         originalScale = transform.localScale;
+        sprite = transform.Find("Sprite").transform;
     }
 
     private void Update()
     {
+        if (groundCheck != null)
+        {
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        }
+        else
+        {
+            isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, groundLayer);
+        }
+
+        if (!isControllable) return;
         if (isDashing) return;
 
         horizontalInput = 0f;
@@ -65,15 +85,6 @@ public class Pemain : MonoBehaviour
             StartCoroutine(DashCoroutine());
         }
 
-        if (groundCheck != null)
-        {
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        }
-        else
-        {
-            isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, groundLayer);
-        }
-
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
         {
             Jump();
@@ -82,10 +93,10 @@ public class Pemain : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!isControllable) return;
         if (isDashing) return;
 
         float targetSpeed = horizontalInput * kecepatan;
-        float speedDif = targetSpeed - rb.linearVelocity.x;
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? akselerasi : deselerasi;
         float newSpeed = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
 
@@ -112,12 +123,11 @@ public class Pemain : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, tiltSpeed * Time.fixedDeltaTime);
     }
 
-    private System.Collections.IEnumerator DashCoroutine()
+    private IEnumerator DashCoroutine()
     {
         canDash = false;
         isDashing = true;
 
-        float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
 
         rb.linearVelocity = new Vector2(facingDirection * kecepatanDash, 0f);
@@ -134,6 +144,20 @@ public class Pemain : MonoBehaviour
         canDash = true;
     }
 
+    public void Die()
+    {
+        isControllable = false;
+        rb.linearVelocity = Vector2.zero;
+
+        if (deathParticleEffect != null)
+        {
+            Instantiate(deathParticleEffect, transform.position, Quaternion.identity);
+        }
+
+        sprite.gameObject.SetActive(false);
+        StartCoroutine(TungguMati(2f));
+    }
+
     private void Jump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, lompat);
@@ -146,5 +170,55 @@ public class Pemain : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+    }
+
+    public void TriggerSpawnAnimation(float duration, bool autoEnableControl = true)
+    {
+        StartCoroutine(SpawnSequence(duration, autoEnableControl));
+    }
+
+    private IEnumerator TungguMati(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        gameObject.SetActive(false);
+        GameManager.instance.StartLevelSequence();
+        Destroy(gameObject);
+    }
+
+    private IEnumerator SpawnSequence(float duration, bool autoEnableControl)
+    {
+        isControllable = false;
+        rb.simulated = false;
+        transform.localScale = Vector3.zero;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            transform.localScale = Vector3.Lerp(Vector3.zero, originalScale, t);
+
+            float rotation = Mathf.Lerp(0f, 360f, t);
+            transform.rotation = Quaternion.Euler(0, 0, rotation);
+
+            yield return null;
+        }
+
+        transform.localScale = originalScale;
+        transform.rotation = Quaternion.identity;
+
+        rb.simulated = true;
+        if (autoEnableControl)
+        {
+            isControllable = true;
+        }
+    }
+
+    public void EnterFinishState()
+    {
+        isControllable = false;
+        rb.linearVelocity = Vector2.zero;
+        rb.simulated = false;
     }
 }
