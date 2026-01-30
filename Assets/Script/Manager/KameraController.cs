@@ -12,8 +12,8 @@ public class KameraController : MonoBehaviour
     [Header("Background Settings")]
     public RectTransform backgroundTransform;
     public float backgroundSpeed = 0.5f;
-    public Vector2 backgroundAmplitude = new Vector2(10f, 5f);
-    public Color darkColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+    public Vector2 backgroundAmplitude = new Vector2(60f, 60f);
+    public Color darkColor = new Color(0.78431374f, 0.78431374f, 0.78431374f, 1f);
     public float fadeDuration = 1.0f;
 
     [Header("Vignette Settings")]
