@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     private DialogueManager dialogueManager;
     private SpawnController spawnController;
+    private LevelConfig levelConfig;
 
     public static GameManager instance;
     void Start()
@@ -21,6 +23,7 @@ public class GameManager : MonoBehaviour
 
         dialogueManager = FindFirstObjectByType<DialogueManager>();
         spawnController = FindFirstObjectByType<SpawnController>();
+        levelConfig = FindFirstObjectByType<LevelConfig>();
 
         if (spawnController != null)
         {
@@ -39,7 +42,7 @@ public class GameManager : MonoBehaviour
     {
         spawnController.OnLevelSequenceFinished -= OnSpawnFinished;
 
-        if (dialogueManager != null)
+        if (dialogueManager != null && levelConfig.hasIntroDialogue)
         {
             System.Action onDialogueFinished = null;
             onDialogueFinished = () =>
@@ -49,12 +52,17 @@ public class GameManager : MonoBehaviour
                 {
                     player.isControllable = true;
                 }
-                StartCoroutine(DelayedShootingSequence());
+
+                foreach (EventSituasi eventSituasi in levelConfig.introEvents)
+                {
+                    StartCoroutine(ExecuteIntroEvent(eventSituasi));
+                }
             };
 
             dialogueManager.OnDialogueFinished += onDialogueFinished;
-            dialogueManager.ShowDialogue("You will <slow>die</slow> in <slow>2 seconds</slow> from <fast>upcoming bullets</fast>");
-            if(ApakahDebug)
+            dialogueManager.ShowDialogue(levelConfig.introDialogueText);
+
+            if (ApakahDebug)
             {
                 player.isControllable = true;
             }
@@ -62,21 +70,20 @@ public class GameManager : MonoBehaviour
         else if (player != null)
         {
             player.isControllable = true;
-            StartCoroutine(DelayedShootingSequence());
+        }
+
+        if(!levelConfig.hasIntroDialogue)
+        {
+            foreach (EventSituasi eventSituasi in levelConfig.introEvents)
+            {
+                StartCoroutine(ExecuteIntroEvent(eventSituasi));
+            }
         }
     }
 
-    private System.Collections.IEnumerator DelayedShootingSequence()
+    IEnumerator ExecuteIntroEvent(EventSituasi eventSituasi)
     {
-        yield return new WaitForSeconds(2f);
-
-        Tembak[] shooters = FindObjectsByType<Tembak>(FindObjectsSortMode.None);
-        foreach (Tembak shooter in shooters)
-        {
-            if (shooter != null)
-            {
-                shooter.Shoot();
-            }
-        }
+        yield return new WaitForSeconds(eventSituasi.delay);
+        eventSituasi.onEventTriggered?.Invoke();
     }
 }

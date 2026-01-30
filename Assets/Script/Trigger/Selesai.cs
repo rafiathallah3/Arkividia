@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Selesai : MonoBehaviour
 {
     [SerializeField] private float suckDuration = 2.0f;
     [SerializeField] private float rotationSpeed = 360f;
+
+    public string namaSceneLoad;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -45,5 +48,10 @@ public class Selesai : MonoBehaviour
 
         player.transform.position = endPosition;
         player.transform.localScale = Vector3.zero;
+
+        if(namaSceneLoad != "")
+        {
+            SceneManager.LoadScene(namaSceneLoad);       
+        }
     }
 }

@@ -831,6 +831,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Selesai
       objectReference: {fileID: 0}
+    - target: {fileID: 7830049858366204517, guid: 5d69607431383514fbcae9c9d4790ffc, type: 3}
+      propertyPath: namaSceneLoad
+      value: Level 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1007,7 +1011,7 @@ EdgeCollider2D:
   m_Points:
   - {x: 0.49229807, y: 1.4884471}
   - {x: 0.5060797, y: 1.5160116}
-  - {x: 0.4766932, y: -2.4402654}
+  - {x: 0.4766932, y: -5.0026526}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
@@ -1635,8 +1639,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddbd3776f87d72f4598e967ec3af8159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  textSpoiler: You will jump early
   apakahSudahAktif: 0
+  textSpoiler: You will jump early
+  events: []
 --- !u!61 &785684203
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1728,8 +1733,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddbd3776f87d72f4598e967ec3af8159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  textSpoiler: For the last one, you will jump on to the spike
   apakahSudahAktif: 0
+  textSpoiler: For the last one, you will jump on to the spike
+  events: []
 --- !u!61 &793053655
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2282,6 +2288,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1215990699}
   - component: {fileID: 1215990698}
+  - component: {fileID: 1215990701}
+  - component: {fileID: 1215990700}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2317,6 +2325,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1215990700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215990697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e753aa23e86e7747a976313368009d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Situasi
+--- !u!114 &1215990701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215990697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 654b375dbfff27340a4fb9e3c0f76a7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
+  hasIntroDialogue: 1
+  introDialogueText: You will <slow>die in 5 seconds</slow> from <fast>upcoming bullets</fast>
+  introEvents:
+  - delay: 1
+    onEventTriggered:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1215990700}
+          m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
+          m_MethodName: MulaiTembak
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1244806920
 GameObject:
   m_ObjectHideFlags: 0
@@ -3223,7 +3274,7 @@ Transform:
   m_GameObject: {fileID: 1722611893}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 10.21, y: -3.82, z: 0}
+  m_LocalPosition: {x: 10.21, y: -4.09, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3384,9 +3435,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddbd3776f87d72f4598e967ec3af8159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  apakahSudahAktif: 0
   textSpoiler: You jumped over it didn't you<slow>...</slow> It was safe you could've
     walked through it
-  apakahSudahAktif: 0
+  events: []
 --- !u!61 &1823935085
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -15,9 +15,8 @@ public class DialogueManager : MonoBehaviour
     private Vector2 originalPosition;
     private Vector2 offScreenPosition;
 
-    private Coroutine typingCoroutine;
     private Pemain player;
-    private bool isPanelActive = false; // Tracks if panel is logically active/sliding in
+    private bool isPanelActive = false;
 
     public static DialogueManager instance;
 
@@ -48,6 +47,7 @@ public class DialogueManager : MonoBehaviour
     {
         gameObject.SetActive(true);
         dialoguePanel.SetActive(true);
+        KameraController.Instance.DarkenBackground();
 
         player = FindAnyObjectByType<Pemain>();
 
@@ -68,7 +68,7 @@ public class DialogueManager : MonoBehaviour
         isPanelActive = true;
 
         StopAllCoroutines();
-        typingCoroutine = StartCoroutine(PlayDialogueSequence(text, skipSlideIn, stopPlayer));
+        StartCoroutine(PlayDialogueSequence(text, skipSlideIn, stopPlayer));
     }
 
     public event System.Action OnDialogueFinished;
@@ -95,6 +95,7 @@ public class DialogueManager : MonoBehaviour
         isPanelActive = false;
         dialoguePanel.SetActive(false);
         gameObject.SetActive(false);
+        KameraController.Instance.RestoreBackground();
 
         if (stopPlayer && player != null)
         {

@@ -38,8 +38,10 @@ public class Pemain : MonoBehaviour
     public bool isControllable = true;
 
     public GameObject deathParticleEffect;
+    GameObject tambahanDeathParticle;
 
     Transform sprite;
+    TrailRenderer trailRenderer;
 
     // Dash State
     private bool isDashing;
@@ -52,6 +54,7 @@ public class Pemain : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         originalScale = transform.localScale;
         sprite = transform.Find("Sprite").transform;
+        trailRenderer = GetComponent<TrailRenderer>();
     }
 
     private void Update()
@@ -151,11 +154,12 @@ public class Pemain : MonoBehaviour
 
         if (deathParticleEffect != null)
         {
-            Instantiate(deathParticleEffect, transform.position, Quaternion.identity);
+            tambahanDeathParticle = Instantiate(deathParticleEffect, transform.position, Quaternion.identity);
         }
 
         sprite.gameObject.SetActive(false);
-        StartCoroutine(TungguMati(2f));
+        trailRenderer.enabled = false;
+        StartCoroutine(TungguMati(1f));
     }
 
     private void Jump()
@@ -183,6 +187,7 @@ public class Pemain : MonoBehaviour
         gameObject.SetActive(false);
         GameManager.instance.StartLevelSequence();
         Destroy(gameObject);
+        Destroy(tambahanDeathParticle);
     }
 
     private IEnumerator SpawnSequence(float duration, bool autoEnableControl)

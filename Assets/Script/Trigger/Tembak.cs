@@ -7,6 +7,7 @@ public class Tembak : MonoBehaviour
     [SerializeField] private float bulletSpeed = 10f;
     [SerializeField] private float bulletLifeTime = 5f;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private Quaternion fireRotation;
 
     void Start()
     {
@@ -23,13 +24,16 @@ public class Tembak : MonoBehaviour
         Transform spawnPoint = firePoint != null ? firePoint : transform;
 
         GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
+        bullet.transform.rotation = fireRotation;
 
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
+        if(rb == null)
         {
-            rb.gravityScale = 0f;
-            rb.linearVelocity = spawnPoint.right * bulletSpeed;
+            rb = bullet.AddComponent<Rigidbody2D>();
         }
+
+        rb.gravityScale = 0f;
+        rb.linearVelocity = spawnPoint.right * bulletSpeed;
 
         Destroy(bullet, bulletLifeTime);
     }
