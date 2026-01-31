@@ -25,4 +25,20 @@ public class Situasi : MonoBehaviour
             obj.SetActive(true);
         }
     }
+
+    public void EnableLava(NaikLava lava)
+    {
+        if(lava != null)
+        {
+            lava.enabled = true;
+        }
+    }
+
+    public void EnableGerakin(GerakinObject gerakin)
+    {
+        if(gerakin != null)
+        {
+            gerakin.enabled = true;
+        }
+    }
 }

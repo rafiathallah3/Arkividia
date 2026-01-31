@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     private DialogueManager dialogueManager;
     private SpawnController spawnController;
     private LevelConfig levelConfig;
+    public GameObject CanvasUtamaUI;
 
     public static GameManager instance;
     void Start()
@@ -24,6 +25,11 @@ public class GameManager : MonoBehaviour
         dialogueManager = FindFirstObjectByType<DialogueManager>();
         spawnController = FindFirstObjectByType<SpawnController>();
         levelConfig = FindFirstObjectByType<LevelConfig>();
+
+        if(CanvasUtamaUI != null)
+        {
+            CanvasUtamaUI.SetActive(true);
+        }
 
         if (spawnController != null)
         {
