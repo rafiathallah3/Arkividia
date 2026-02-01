@@ -159,7 +159,11 @@ public class KameraController : MonoBehaviour
     {
         if (player == null)
         {
-            if (GameObject.FindGameObjectWithTag("Player") == null) return;
+            if (GameObject.FindGameObjectWithTag("Player") == null)
+            {
+                MoveTo(currentRoom.followMinPosition);
+                return;
+            }
             player = GameObject.FindGameObjectWithTag("Player").transform;
         }
 

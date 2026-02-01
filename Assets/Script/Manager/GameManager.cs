@@ -22,14 +22,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        dialogueManager = FindFirstObjectByType<DialogueManager>();
-        spawnController = FindFirstObjectByType<SpawnController>();
-        levelConfig = FindFirstObjectByType<LevelConfig>();
-
         if(CanvasUtamaUI != null)
         {
             CanvasUtamaUI.SetActive(true);
         }
+
+        dialogueManager = FindFirstObjectByType<DialogueManager>();
+        spawnController = FindFirstObjectByType<SpawnController>();
+        levelConfig = FindFirstObjectByType<LevelConfig>();
 
         if (spawnController != null)
         {

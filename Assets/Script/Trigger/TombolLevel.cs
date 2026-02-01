@@ -1,0 +1,79 @@
+using System.Collections;
+using UnityEngine;
+
+public class TombolLevel : MonoBehaviour
+{
+    public float AwalAlpha = 130f;
+    public float AkhirAlpha = 255f;
+
+    private Vector3 originalScale;
+    private SpriteRenderer spriteRenderer;
+    private bool isPressed = false;
+
+    void Start()
+    {
+        originalScale = transform.localScale;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (isPressed) return;
+
+        if (collision.gameObject.TryGetComponent(out Pemain _))
+        {
+            StartCoroutine(AnimateButton());
+        }
+    }
+
+    private IEnumerator AnimateButton()
+    {
+        isPressed = true;
+
+        Vector3 pressedScale = originalScale * 0.8f;
+        float startAlpha = AwalAlpha / 255f;
+        float endAlpha = AkhirAlpha / 255f;
+
+        transform.localScale = pressedScale;
+        if (spriteRenderer != null)
+        {
+            Color color = spriteRenderer.color;
+            color.a = startAlpha;
+            spriteRenderer.color = color;
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        float duration = 0.3f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+
+            t = Mathf.SmoothStep(0f, 1f, t);
+
+            transform.localScale = Vector3.Lerp(pressedScale, originalScale, t);
+
+            if (spriteRenderer != null)
+            {
+                Color color = spriteRenderer.color;
+                color.a = Mathf.Lerp(startAlpha, endAlpha, t);
+                spriteRenderer.color = color;
+            }
+
+            yield return null;
+        }
+
+        transform.localScale = originalScale;
+        if (spriteRenderer != null)
+        {
+            Color color = spriteRenderer.color;
+            color.a = endAlpha;
+            spriteRenderer.color = color;
+        }
+
+        isPressed = false;
+    }
+}

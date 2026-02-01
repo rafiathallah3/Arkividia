@@ -14,6 +14,12 @@ public class DialogueManager : MonoBehaviour
     private Vector2 originalPosition;
     private Vector2 offScreenPosition;
 
+    public RectTransform blinkingCursor;
+    public Vector3 cursorOffset = new Vector3(20f, 13f, 0);
+    public float blinkInterval = 0.5f;
+
+    private Coroutine blinkCoroutine;
+
     private Pemain player;
     private bool isPanelActive = false;
 
@@ -37,14 +43,12 @@ public class DialogueManager : MonoBehaviour
         offScreenPosition = originalPosition + new Vector2(0, Screen.height);
         panelRect.anchoredPosition = offScreenPosition;
 
-        gameObject.SetActive(false);
         dialoguePanel.SetActive(false);
         // ShowDialogue("AAAAAAAAAAAAAAAAAAAAAAA Testing <slow>slow</slow> and <fast>fast</fast> speeds.");
     }
 
     public void ShowDialogue(string text, bool stopPlayer = false)
     {
-        gameObject.SetActive(true);
         dialoguePanel.SetActive(true);
         KameraController.Instance.DarkenBackground();
 
@@ -76,6 +80,8 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueText.text = "";
 
+        if (blinkingCursor != null) blinkingCursor.gameObject.SetActive(false);
+
         if (!skipSlideIn)
         {
             yield return StartCoroutine(SlidePanel(offScreenPosition, originalPosition));
@@ -85,15 +91,23 @@ public class DialogueManager : MonoBehaviour
             panelRect.anchoredPosition = originalPosition;
         }
 
+        if (blinkingCursor != null)
+        {
+            if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
+            blinkCoroutine = StartCoroutine(BlinkCursorRoutine());
+        }
+
         yield return StartCoroutine(TypeSentence(text));
 
         yield return new WaitForSeconds(autoHideDelay);
+
+        if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
+        if (blinkingCursor != null) blinkingCursor.gameObject.SetActive(false);
 
         yield return StartCoroutine(SlidePanel(originalPosition, offScreenPosition));
 
         isPanelActive = false;
         dialoguePanel.SetActive(false);
-        gameObject.SetActive(false);
         KameraController.Instance.RestoreBackground();
 
         if (stopPlayer && player != null)
@@ -119,9 +133,25 @@ public class DialogueManager : MonoBehaviour
         panelRect.anchoredPosition = end;
     }
 
+    IEnumerator BlinkCursorRoutine()
+    {
+        bool isActive = true;
+        blinkingCursor.gameObject.SetActive(true);
+        while (true)
+        {
+            yield return new WaitForSeconds(blinkInterval);
+            isActive = !isActive;
+            blinkingCursor.gameObject.SetActive(isActive);
+        }
+    }
+
     IEnumerator TypeSentence(string sentence)
     {
-        dialogueText.text = "";
+        // dialogueText.text = ""; // Already cleared in PlayDialogueSequence
+
+        // Show cursor if assigned
+        // if (blinkingCursor != null) blinkingCursor.gameObject.SetActive(true); // Managed by PlayDialogueSequence
+
         bool isSlow = false;
         bool isFast = false;
 
@@ -168,9 +198,29 @@ public class DialogueManager : MonoBehaviour
             }
 
             dialogueText.text += sentence[i];
+            dialogueText.ForceMeshUpdate();
+
+            if (blinkingCursor != null)
+            {
+                TMP_TextInfo textInfo = dialogueText.textInfo;
+                int characterIndex = textInfo.characterCount - 1;
+
+                if (characterIndex >= 0 && characterIndex < textInfo.characterInfo.Length)
+                {
+                    TMP_CharacterInfo charInfo = textInfo.characterInfo[characterIndex];
+
+                    if (charInfo.isVisible)
+                    {
+                        Vector3 charPos = charInfo.bottomRight;
+
+                        Vector3 worldPos = dialogueText.transform.TransformPoint(charPos);
+                        blinkingCursor.position = worldPos + cursorOffset;
+                    }
+                }
+            }
 
             float currentSpeed = typingSpeed;
-            if (isSlow) currentSpeed *= 5.0f;
+            if (isSlow) currentSpeed *= 2.0f;
             if (isFast) currentSpeed *= 0.5f;
 
             yield return new WaitForSeconds(currentSpeed);

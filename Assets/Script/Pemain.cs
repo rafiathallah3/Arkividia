@@ -5,6 +5,8 @@ using System.Collections;
 [RequireComponent(typeof(Collider2D))]
 public class Pemain : MonoBehaviour
 {
+    public bool SudahMati = false;
+
     [Header("Movement Settings")]
     [SerializeField] private float kecepatan = 5f;
     [SerializeField] private float akselerasi = 10f;
@@ -19,6 +21,7 @@ public class Pemain : MonoBehaviour
     [SerializeField] private float durasiDash = 0.2f;
     [SerializeField] private float cooldownDash = 1f;
     [SerializeField] private Vector3 dashShrinkScale = new Vector3(0.8f, 0.8f, 1f);
+    private GameObject DashEffectObject;
 
     [Header("Gravity Settings")]
     [SerializeField] private float scaleGravitasi = 1f;
@@ -28,8 +31,10 @@ public class Pemain : MonoBehaviour
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask safeCrushLayer;
 
     private Rigidbody2D rb;
+    private Collider2D col;
     private bool isGrounded;
     public bool IsGrounded => isGrounded;
     private float horizontalInput;
@@ -42,6 +47,8 @@ public class Pemain : MonoBehaviour
 
     Transform sprite;
     TrailRenderer trailRenderer;
+    TrailRenderer[] trails;
+
 
     // Dash State
     private bool isDashing;
@@ -54,18 +61,25 @@ public class Pemain : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         originalScale = transform.localScale;
         sprite = transform.Find("Sprite").transform;
+        col = GetComponent<Collider2D>();
         trailRenderer = GetComponent<TrailRenderer>();
+        DashEffectObject = transform.Find("DashEffect").gameObject;
+        trails = DashEffectObject.GetComponentsInChildren<TrailRenderer>();
+
+        SetTrailAlpha(0f);
     }
 
     private void Update()
     {
+        LayerMask effectiveGround = groundLayer | safeCrushLayer;
+
         if (groundCheck != null)
         {
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, effectiveGround);
         }
         else
         {
-            isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, groundLayer);
+            isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, effectiveGround);
         }
 
         if (!isControllable) return;
@@ -114,7 +128,6 @@ public class Pemain : MonoBehaviour
             rb.gravityScale = scaleGravitasi;
         }
 
-        // Tilt Logic
         float targetTilt = 0f;
         if (!isGrounded)
         {
@@ -124,17 +137,57 @@ public class Pemain : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetTilt);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, tiltSpeed * Time.fixedDeltaTime);
+
+        CheckForCrush();
+    }
+
+    private void CheckForCrush()
+    {
+        if (!isControllable) return;
+
+        if (col != null)
+        {
+            float checkDistance = 0.07f;
+            Bounds bounds = col.bounds;
+
+            RaycastHit2D hitTop = Physics2D.Raycast(bounds.center, Vector2.up, bounds.extents.y + checkDistance, groundLayer);
+            RaycastHit2D hitBottom = Physics2D.Raycast(bounds.center, Vector2.down, bounds.extents.y + checkDistance, groundLayer);
+
+            RaycastHit2D hitLeft = Physics2D.Raycast(bounds.center, Vector2.left, bounds.extents.x + checkDistance, groundLayer);
+            RaycastHit2D hitRight = Physics2D.Raycast(bounds.center, Vector2.right, bounds.extents.x + checkDistance, groundLayer);
+
+            if (hitTop && hitBottom)
+            {
+                if (!IsSafe(hitTop) && !IsSafe(hitBottom))
+                {
+                    Die();
+                }
+            }
+            else if (hitLeft && hitRight)
+            {
+                if (!IsSafe(hitLeft) && !IsSafe(hitRight))
+                {
+                    Die();
+                }
+            }
+        }
+    }
+
+    private bool IsSafe(RaycastHit2D hit)
+    {
+        if (hit.collider == null) return false;
+        return ((1 << hit.collider.gameObject.layer) & safeCrushLayer) != 0;
     }
 
     private IEnumerator DashCoroutine()
     {
         canDash = false;
         isDashing = true;
+        DashEffectObject.SetActive(true);
+        SetTrailAlpha(1f);
 
         rb.gravityScale = 0f;
-
         rb.linearVelocity = new Vector2(facingDirection * kecepatanDash, 0f);
-
         transform.localScale = dashShrinkScale;
 
         yield return new WaitForSeconds(durasiDash);
@@ -143,12 +196,16 @@ public class Pemain : MonoBehaviour
         transform.localScale = originalScale;
         isDashing = false;
 
+        StartCoroutine(FadeTrail());
+
         yield return new WaitForSeconds(cooldownDash);
         canDash = true;
     }
 
     public void Die()
     {
+        if (SudahMati) return;
+        SudahMati = true;
         isControllable = false;
         rb.linearVelocity = Vector2.zero;
 
@@ -174,6 +231,53 @@ public class Pemain : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
+
+        Gizmos.color = Color.yellow;
+        if (col != null)
+        {
+            Bounds b = col.bounds;
+            float dist = 0.1f;
+            // Draw rays for visualization
+            Gizmos.DrawLine(b.center, b.center + Vector3.up * (b.extents.y + dist));
+            Gizmos.DrawLine(b.center, b.center + Vector3.down * (b.extents.y + dist));
+            Gizmos.DrawLine(b.center, b.center + Vector3.left * (b.extents.x + dist));
+            Gizmos.DrawLine(b.center, b.center + Vector3.right * (b.extents.x + dist));
+        }
+    }
+
+    private void SetTrailAlpha(float alpha)
+    {
+        if (DashEffectObject == null) return;
+
+        foreach (TrailRenderer trail in trails)
+        {
+            if (trail == null) continue;
+
+            Color start = trail.startColor;
+            start.a = alpha;
+            trail.startColor = start;
+
+            Color end = trail.endColor;
+            end.a = alpha;
+            trail.endColor = end;
+        }
+    }
+
+    private IEnumerator FadeTrail()
+    {
+        float duration = 0.5f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
+            SetTrailAlpha(alpha);
+            yield return null;
+        }
+
+        SetTrailAlpha(0f);
+        DashEffectObject.SetActive(false);
     }
 
     public void TriggerSpawnAnimation(float duration, bool autoEnableControl = true)
