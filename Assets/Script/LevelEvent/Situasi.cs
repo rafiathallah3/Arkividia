@@ -12,15 +12,15 @@ public class Situasi : MonoBehaviour
 
     public void HilanginPlatform(GameObject platform)
     {
-        if(platform != null)
+        if (platform != null)
         {
-            Destroy(platform);
+            platform.SetActive(false);
         }
     }
 
     public void TunjuinGameObject(GameObject obj)
     {
-        if(obj != null)
+        if (obj != null)
         {
             obj.SetActive(true);
         }
@@ -28,7 +28,7 @@ public class Situasi : MonoBehaviour
 
     public void EnableLava(NaikLava lava)
     {
-        if(lava != null)
+        if (lava != null)
         {
             lava.enabled = true;
         }
@@ -36,9 +36,33 @@ public class Situasi : MonoBehaviour
 
     public void EnableGerakin(GerakinObject gerakin)
     {
-        if(gerakin != null)
+        if (gerakin != null)
         {
             gerakin.enabled = true;
+        }
+    }
+
+    public void EnableLaser(Laser laser)
+    {
+        if (laser != null)
+        {
+            laser.enabled = true;
+        }
+    }
+
+    public void DisableLaser(Laser laser)
+    {
+        if (laser != null)
+        {
+            laser.enabled = false;
+        }
+    }
+
+    public void HentikanShake()
+    {
+        if (KameraController.Instance != null)
+        {
+            KameraController.Instance.StopShake();
         }
     }
 }

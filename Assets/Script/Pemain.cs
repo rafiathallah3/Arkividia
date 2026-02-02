@@ -37,20 +37,27 @@ public class Pemain : MonoBehaviour
     private Collider2D col;
     private bool isGrounded;
     public bool IsGrounded => isGrounded;
+    private bool wasGrounded;
     private float horizontalInput;
 
     // Control State
     public bool isControllable = true;
 
+    public GameObject landingParticleEffect;
     public GameObject deathParticleEffect;
     GameObject tambahanDeathParticle;
+
+    private float speedMultiplier = 1f;
+
+    public void SetSpeedMultiplier(float multiplier)
+    {
+        speedMultiplier = multiplier;
+    }
 
     Transform sprite;
     TrailRenderer trailRenderer;
     TrailRenderer[] trails;
 
-
-    // Dash State
     private bool isDashing;
     private bool canDash = true;
     private float facingDirection = 1f;
@@ -81,6 +88,23 @@ public class Pemain : MonoBehaviour
         {
             isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, effectiveGround);
         }
+
+        // Prevent sliding when landing
+        if (!wasGrounded && isGrounded)
+        {
+            if (landingParticleEffect != null)
+            {
+                GameObject particle = Instantiate(landingParticleEffect, groundCheck.position, Quaternion.identity);
+                Destroy(particle, 1f);
+            }
+
+            if (!isDashing && Mathf.Abs(rb.linearVelocity.x) > kecepatan)
+            {
+                rb.linearVelocity = new Vector2(Mathf.Clamp(rb.linearVelocity.x, -kecepatan, kecepatan), rb.linearVelocity.y);
+            }
+        }
+
+        wasGrounded = isGrounded;
 
         if (!isControllable) return;
         if (isDashing) return;
@@ -113,7 +137,7 @@ public class Pemain : MonoBehaviour
         if (!isControllable) return;
         if (isDashing) return;
 
-        float targetSpeed = horizontalInput * kecepatan;
+        float targetSpeed = horizontalInput * kecepatan * speedMultiplier;
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? akselerasi : deselerasi;
         float newSpeed = Mathf.MoveTowards(rb.linearVelocity.x, targetSpeed, accelRate * Time.fixedDeltaTime);
 
@@ -147,7 +171,7 @@ public class Pemain : MonoBehaviour
 
         if (col != null)
         {
-            float checkDistance = 0.07f;
+            float checkDistance = 0.02f;
             Bounds bounds = col.bounds;
 
             RaycastHit2D hitTop = Physics2D.Raycast(bounds.center, Vector2.up, bounds.extents.y + checkDistance, groundLayer);
@@ -196,6 +220,11 @@ public class Pemain : MonoBehaviour
         transform.localScale = originalScale;
         isDashing = false;
 
+        if (isGrounded)
+        {
+            rb.linearVelocity = new Vector2(Mathf.Clamp(rb.linearVelocity.x, -kecepatan, kecepatan), rb.linearVelocity.y);
+        }
+
         StartCoroutine(FadeTrail());
 
         yield return new WaitForSeconds(cooldownDash);
@@ -208,6 +237,8 @@ public class Pemain : MonoBehaviour
         SudahMati = true;
         isControllable = false;
         rb.linearVelocity = Vector2.zero;
+        rb.simulated = false;
+        col.enabled = false;
 
         if (deathParticleEffect != null)
         {

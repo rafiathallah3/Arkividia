@@ -1,14 +1,20 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TombolLevel : MonoBehaviour
 {
     public float AwalAlpha = 130f;
     public float AkhirAlpha = 255f;
 
+    [Header("Unpress Settings")]
+    public bool bisaUnpress;
+    public float delayUnpress;
+    public UnityEvent OnUnpressed;
+
     private Vector3 originalScale;
     private SpriteRenderer spriteRenderer;
-    private bool isPressed = false;
+    public bool isPressed = false;
 
     void Start()
     {
@@ -16,12 +22,15 @@ public class TombolLevel : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    public UnityEvent OnPressed;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isPressed) return;
 
         if (collision.gameObject.TryGetComponent(out Pemain _))
         {
+            OnPressed?.Invoke();
             StartCoroutine(AnimateButton());
         }
     }
@@ -42,7 +51,7 @@ public class TombolLevel : MonoBehaviour
             spriteRenderer.color = color;
         }
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(bisaUnpress ? delayUnpress : 0.1f);
 
         float duration = 0.3f;
         float elapsed = 0f;
@@ -75,5 +84,10 @@ public class TombolLevel : MonoBehaviour
         }
 
         isPressed = false;
+
+        if (bisaUnpress)
+        {
+            OnUnpressed?.Invoke();
+        }
     }
 }

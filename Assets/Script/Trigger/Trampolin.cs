@@ -3,6 +3,7 @@ using UnityEngine;
 public class Trampolin : MonoBehaviour
 {
     public float Kekuatan = 10f;
+    public Vector2 directionOffset;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,8 +13,17 @@ public class Trampolin : MonoBehaviour
             if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
-                rb.AddForce(transform.up * Kekuatan, ForceMode2D.Impulse);
+                Vector2 direction = ((Vector2)transform.up + directionOffset).normalized;
+                rb.AddForce(direction * Kekuatan, ForceMode2D.Impulse);
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Vector2 direction = ((Vector2)transform.up + directionOffset).normalized;
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)direction * Kekuatan);
+        Gizmos.DrawSphere(transform.position + (Vector3)direction * Kekuatan, 0.1f);
     }
 }

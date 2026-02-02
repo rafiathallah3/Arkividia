@@ -54,6 +54,11 @@ public class KameraController : MonoBehaviour
             }
         }
 
+        if (vignetteTransform == null)
+        {
+            vignetteTransform = GameObject.Find("Vignette")?.GetComponent<RectTransform>();
+        }
+
         if (vignetteTransform != null)
         {
             vignetteImage = vignetteTransform.GetComponent<Image>();
@@ -120,13 +125,41 @@ public class KameraController : MonoBehaviour
         image.color = targetColor;
     }
 
+    private bool isShaking = false;
+    private float shakeMagnitude = 0f;
+    private Vector3 shakeOffset = Vector3.zero;
+
+    public void StartShake(float magnitude)
+    {
+        if (isShaking) return;
+        isShaking = true;
+        shakeMagnitude = magnitude;
+    }
+
+    public void StopShake()
+    {
+        isShaking = false;
+        shakeMagnitude = 0f;
+        shakeOffset = Vector3.zero;
+    }
+
     void LateUpdate()
     {
+        if (isShaking)
+        {
+            shakeOffset = Random.insideUnitSphere * shakeMagnitude;
+            shakeOffset.z = 0;
+        }
+        else
+        {
+            shakeOffset = Vector3.zero;
+        }
+
         if (currentRoom == null) return;
 
         if (currentRoom.cameraMode == CameraMode.Fixed)
         {
-            MoveTo(currentRoom.cameraCenter.position);
+            MoveTo(currentRoom.cameraCenter.position + shakeOffset);
         }
         else if (currentRoom.cameraMode == CameraMode.Follow)
         {
@@ -181,6 +214,6 @@ public class KameraController : MonoBehaviour
             currentRoom.followMaxPosition.y
         );
 
-        MoveTo(target);
+        MoveTo(target + shakeOffset);
     }
 }
