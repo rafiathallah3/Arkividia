@@ -65,4 +65,22 @@ public class Situasi : MonoBehaviour
             KameraController.Instance.StopShake();
         }
     }
+
+    public void MulaiAmbientSuara(AudioClip audioClip)
+    {
+        if (GameManager.instance != null && GameManager.instance.ambientAudioSource != null)
+        {
+            GameManager.instance.ambientAudioSource.Stop();
+            GameManager.instance.ambientAudioSource.clip = audioClip;
+            GameManager.instance.ambientAudioSource.Play();
+        }
+    }
+
+    public void HentikanAMbientSuara()
+    {
+        if (GameManager.instance != null && GameManager.instance.ambientAudioSource != null)
+        {
+            GameManager.instance.ambientAudioSource.Stop();
+        }
+    }
 }

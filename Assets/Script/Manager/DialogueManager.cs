@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour
     public RectTransform blinkingCursor;
     public Vector3 cursorOffset = new Vector3(20f, 13f, 0);
     public float blinkInterval = 0.5f;
+    public AudioClip typingSound;
 
     private Coroutine blinkCoroutine;
 
@@ -217,6 +218,11 @@ public class DialogueManager : MonoBehaviour
                         blinkingCursor.position = worldPos + cursorOffset;
                     }
                 }
+            }
+
+            if (typingSound != null && GameManager.instance != null && GameManager.instance.sfxAudioSource != null)
+            {
+                GameManager.instance.sfxAudioSource.PlayOneShot(typingSound);
             }
 
             float currentSpeed = typingSpeed;

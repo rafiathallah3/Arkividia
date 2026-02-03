@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -33,8 +35,16 @@ public class Pemain : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask safeCrushLayer;
 
+    [Header("Suara")]
+    public AudioSource audioSource;
+    public AudioClip Lompat;
+    public AudioClip Mati;
+    public AudioClip SuaraDash;
+    public AudioClip SuaraMendarat;
+
     private Rigidbody2D rb;
     private Collider2D col;
+    private new Light2D light;
     private bool isGrounded;
     public bool IsGrounded => isGrounded;
     private bool wasGrounded;
@@ -45,7 +55,7 @@ public class Pemain : MonoBehaviour
 
     public GameObject landingParticleEffect;
     public GameObject deathParticleEffect;
-    GameObject tambahanDeathParticle;
+    public GameObject tambahanDeathParticle;
 
     private float speedMultiplier = 1f;
 
@@ -70,10 +80,53 @@ public class Pemain : MonoBehaviour
         sprite = transform.Find("Sprite").transform;
         col = GetComponent<Collider2D>();
         trailRenderer = GetComponent<TrailRenderer>();
+        light = GetComponent<Light2D>();
         DashEffectObject = transform.Find("DashEffect").gameObject;
         trails = DashEffectObject.GetComponentsInChildren<TrailRenderer>();
 
+        if (audioSource == null) audioSource = GetComponent<AudioSource>();
+
         SetTrailAlpha(0f);
+    }
+
+    // Lombat: Jumped off the bench
+    // Landed: Sound: Landed on the floor with his feet after jumping
+    // Dash: Strong mace strike
+
+    public void Die()
+    {
+        if (SudahMati) return;
+        SudahMati = true;
+        isControllable = false;
+        rb.linearVelocity = Vector2.zero;
+        rb.simulated = false;
+        col.enabled = false;
+
+        if (audioSource != null && Mati != null)
+        {
+            audioSource.PlayOneShot(Mati);
+        }
+
+        if (deathParticleEffect != null)
+        {
+            tambahanDeathParticle = Instantiate(deathParticleEffect, transform.position, Quaternion.identity);
+        }
+
+        KameraController.Instance.StopShake();
+        GameManager.instance.ambientAudioSource.Stop();
+        sprite.gameObject.SetActive(false);
+        trailRenderer.enabled = false;
+        light.enabled = false;
+        StartCoroutine(TungguMati(1f));
+    }
+
+    private void Jump()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, lompat);
+        if (audioSource != null && Lompat != null)
+        {
+            audioSource.PlayOneShot(Lompat);
+        }
     }
 
     private void Update()
@@ -89,9 +142,13 @@ public class Pemain : MonoBehaviour
             isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 1.1f, effectiveGround);
         }
 
-        // Prevent sliding when landing
         if (!wasGrounded && isGrounded)
         {
+            if (audioSource != null && SuaraMendarat != null)
+            {
+                audioSource.PlayOneShot(SuaraMendarat);
+            }
+
             if (landingParticleEffect != null)
             {
                 GameObject particle = Instantiate(landingParticleEffect, groundCheck.position, Quaternion.identity);
@@ -210,6 +267,11 @@ public class Pemain : MonoBehaviour
         DashEffectObject.SetActive(true);
         SetTrailAlpha(1f);
 
+        if (audioSource != null && SuaraDash != null)
+        {
+            audioSource.PlayOneShot(SuaraDash);
+        }
+
         rb.gravityScale = 0f;
         rb.linearVelocity = new Vector2(facingDirection * kecepatanDash, 0f);
         transform.localScale = dashShrinkScale;
@@ -231,30 +293,6 @@ public class Pemain : MonoBehaviour
         canDash = true;
     }
 
-    public void Die()
-    {
-        if (SudahMati) return;
-        SudahMati = true;
-        isControllable = false;
-        rb.linearVelocity = Vector2.zero;
-        rb.simulated = false;
-        col.enabled = false;
-
-        if (deathParticleEffect != null)
-        {
-            tambahanDeathParticle = Instantiate(deathParticleEffect, transform.position, Quaternion.identity);
-        }
-
-        sprite.gameObject.SetActive(false);
-        trailRenderer.enabled = false;
-        StartCoroutine(TungguMati(1f));
-    }
-
-    private void Jump()
-    {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, lompat);
-    }
-
     private void OnDrawGizmosSelected()
     {
         if (groundCheck != null)
@@ -268,7 +306,6 @@ public class Pemain : MonoBehaviour
         {
             Bounds b = col.bounds;
             float dist = 0.1f;
-            // Draw rays for visualization
             Gizmos.DrawLine(b.center, b.center + Vector3.up * (b.extents.y + dist));
             Gizmos.DrawLine(b.center, b.center + Vector3.down * (b.extents.y + dist));
             Gizmos.DrawLine(b.center, b.center + Vector3.left * (b.extents.x + dist));
@@ -319,10 +356,20 @@ public class Pemain : MonoBehaviour
     private IEnumerator TungguMati(float delay)
     {
         yield return new WaitForSeconds(delay);
-        gameObject.SetActive(false);
-        GameManager.instance.StartLevelSequence();
-        Destroy(gameObject);
-        Destroy(tambahanDeathParticle);
+
+        KameraController.Instance.ResetCamera();
+
+        // Wait for camera to finish moving with timeout
+        float timeout = 5.0f;
+        float elapsed = 0f;
+        while (!KameraController.Instance.IsAtTarget && elapsed < timeout)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // GameManager.instance.StartLevelSequence();
     }
 
     private IEnumerator SpawnSequence(float duration, bool autoEnableControl)

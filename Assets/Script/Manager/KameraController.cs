@@ -6,7 +6,7 @@ public class KameraController : MonoBehaviour
 {
     public static KameraController Instance;
 
-    public Transform player;
+    public Pemain player;
     public float smoothTime = 0.2f;
 
     [Header("Background Settings")]
@@ -41,7 +41,7 @@ public class KameraController : MonoBehaviour
     {
         if (GameObject.FindGameObjectWithTag("Player") != null && player == null)
         {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Pemain>();
         }
 
         if (backgroundTransform != null)
@@ -169,7 +169,15 @@ public class KameraController : MonoBehaviour
 
     public void ResetCamera()
     {
-        currentRoom = GameObject.Find("Kamar1").transform.GetChild(0).GetComponent<KamarKamera>();
+        EnterRoom(GameObject.Find("Kamar1").transform.GetChild(0).GetComponent<KamarKamera>());
+        if (currentRoom.cameraMode == CameraMode.Fixed)
+        {
+            _activeTarget = currentRoom.cameraCenter.position;
+        }
+        else
+        {
+            _activeTarget = currentRoom.followMinPosition;
+        }
     }
 
     public void EnterRoom(KamarKamera room)
@@ -177,11 +185,15 @@ public class KameraController : MonoBehaviour
         currentRoom = room;
     }
 
+    private Vector3 _activeTarget;
+    public bool IsAtTarget => Vector3.Distance(transform.position, _activeTarget) < 0.01f;
+
     void MoveTo(Vector3 target)
     {
+        _activeTarget = new Vector3(target.x, target.y, transform.position.z);
         Vector3 pos = Vector3.SmoothDamp(
             transform.position,
-            new Vector3(target.x, target.y, transform.position.z),
+            _activeTarget,
             ref velocity,
             smoothTime
         );
@@ -197,10 +209,16 @@ public class KameraController : MonoBehaviour
                 MoveTo(currentRoom.followMinPosition);
                 return;
             }
-            player = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag("Player").GetComponent<Pemain>();
         }
 
-        Vector3 target = player.position;
+        if(player.SudahMati)
+        {
+            MoveTo(currentRoom.followMinPosition);
+            return;
+        }
+
+        Vector3 target = player.transform.position;
 
         target.x = Mathf.Clamp(
             target.x,

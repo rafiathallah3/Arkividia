@@ -4,11 +4,21 @@ public class Trampolin : MonoBehaviour
 {
     public float Kekuatan = 10f;
     public Vector2 directionOffset;
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.TryGetComponent(out Pemain _))
         {
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             if (rb != null)
             {

@@ -570,6 +570,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -5870,58 +5873,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7158672389653692941, guid: 942246c86f7b5e64f92bb89fbca39b4d, type: 3}
   m_PrefabInstance: {fileID: 199658002}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &107434402
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 107434404}
-  - component: {fileID: 107434403}
-  m_Layer: 0
-  m_Name: SpawnController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &107434403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107434402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1d5716f0b2278142a815e00d1c791bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnController
-  doorPrefab: {fileID: 1303275239567012068, guid: d2efe5659e999f244896eeab9a4339a3, type: 3}
-  playerPrefab: {fileID: 1462850982996088315, guid: bb74e6cd0329f1c4194282d77467570f, type: 3}
-  spawnPoint: {fileID: 623747069}
-  doorEntryDuration: 1.5
-  doorOpenWaitTime: 0.5
-  doorOpenDuration: 0.5
-  doorEntryOffset: {x: 0, y: -5, z: 0}
-  playerSpawnDuration: 0.8
---- !u!4 &107434404
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107434402}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.35658, y: -3.65729, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &108023297
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6339,6 +6290,71 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 942246c86f7b5e64f92bb89fbca39b4d, type: 3}
+--- !u!1001 &124917781
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.82212
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9837
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3395982464964328610, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094423415409684738, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: hasIntroDialogue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5094423415409684738, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: introDialogueText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6003627491514720195, guid: bffc07427a1cd994989255e553612cf5, type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bffc07427a1cd994989255e553612cf5, type: 3}
 --- !u!1 &133114737
 GameObject:
   m_ObjectHideFlags: 0
@@ -7153,7 +7169,7 @@ MonoBehaviour:
     onEventTriggered:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableGerakin
           m_Mode: 2
@@ -7165,7 +7181,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableGerakin
           m_Mode: 2
@@ -7867,6 +7883,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -8036,6 +8055,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -10028,6 +10050,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -10175,7 +10200,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.8
+  m_Intensity: 0.6
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000
@@ -10488,6 +10513,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -10787,7 +10815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7423040759962493689, guid: 7375772f6a1a9744cb6c94ed46fe2964, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.9801
+      value: -9.79
       objectReference: {fileID: 0}
     - target: {fileID: 7423040759962493689, guid: 7375772f6a1a9744cb6c94ed46fe2964, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11985,6 +12013,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -12152,7 +12183,7 @@ MonoBehaviour:
     onEventTriggered:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: HilanginPlatform
           m_Mode: 2
@@ -13101,6 +13132,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Selesai
       objectReference: {fileID: 0}
+    - target: {fileID: 7830049858366204517, guid: 5d69607431383514fbcae9c9d4790ffc, type: 3}
+      propertyPath: namaSceneLoad
+      value: Level 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13499,7 +13534,7 @@ MonoBehaviour:
     onEventTriggered:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13511,7 +13546,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13523,7 +13558,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13535,7 +13570,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13547,7 +13582,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13559,7 +13594,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13571,7 +13606,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13583,7 +13618,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13595,7 +13630,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13607,7 +13642,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -13619,7 +13654,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: EnableLaser
           m_Mode: 2
@@ -14225,6 +14260,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -15484,7 +15522,7 @@ MonoBehaviour:
     onEventTriggered:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: HilanginPlatform
           m_Mode: 2
@@ -15866,81 +15904,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 942246c86f7b5e64f92bb89fbca39b4d, type: 3}
---- !u!1 &1215990697
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1215990699}
-  - component: {fileID: 1215990698}
-  - component: {fileID: 1215990701}
-  - component: {fileID: 1215990700}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1215990698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215990697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e826fc177031cc4a816e18bcaeb5328, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  ApakahDebug: 1
-  CanvasUtamaUI: {fileID: 967683061}
---- !u!4 &1215990699
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215990697}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.99237, y: -3.9836, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1215990700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215990697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e753aa23e86e7747a976313368009d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Situasi
---- !u!114 &1215990701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1215990697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 654b375dbfff27340a4fb9e3c0f76a7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  hasIntroDialogue: 0
-  introDialogueText: You will <slow>die in 2 seconds</slow> from <fast>upcoming bullets</fast>
-  introEvents: []
 --- !u!1001 &1216151774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17011,6 +16974,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -17864,6 +17830,67 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 942246c86f7b5e64f92bb89fbca39b4d, type: 3}
+--- !u!1001 &1502864022
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1233383254538134089, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 623747069}
+    - target: {fileID: 4973226570792734763, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_Name
+      value: SpawnController
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.82212
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.9837
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621841810738549641, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7ac444af29dd2c240a0c7af107ac4a05, type: 3}
 --- !u!4 &1506706510 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7158672389653692941, guid: 942246c86f7b5e64f92bb89fbca39b4d, type: 3}
@@ -18211,6 +18238,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -21067,7 +21097,7 @@ MonoBehaviour:
     onEventTriggered:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1215990700}
+        - m_Target: {fileID: 0}
           m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
           m_MethodName: HilanginPlatform
           m_Mode: 2
@@ -21361,6 +21391,9 @@ MonoBehaviour:
   endWidth: 0.1
   MatiSetelahHidup: 1
   durasiHidup: 3
+  targetVector: {x: 0, y: 0, z: 0}
+  loopMovement: 1
+  moveSpeed: 2
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 887
@@ -21592,6 +21625,7 @@ MonoBehaviour:
   blinkingCursor: {fileID: 1990017982}
   cursorOffset: {x: 20, y: 13, z: 0}
   blinkInterval: 0.5
+  typingSound: {fileID: 0}
 --- !u!1001 &1913227877
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23930,8 +23964,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 181900798}
-  - {fileID: 1215990699}
-  - {fileID: 107434404}
+  - {fileID: 124917781}
+  - {fileID: 1502864022}
   - {fileID: 619394802}
   - {fileID: 1534190095}
   - {fileID: 1144259401}

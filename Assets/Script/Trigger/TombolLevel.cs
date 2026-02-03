@@ -16,10 +16,14 @@ public class TombolLevel : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public bool isPressed = false;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+
     void Start()
     {
         originalScale = transform.localScale;
         spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public UnityEvent OnPressed;
@@ -31,6 +35,10 @@ public class TombolLevel : MonoBehaviour
         if (collision.gameObject.TryGetComponent(out Pemain _))
         {
             OnPressed?.Invoke();
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }
             StartCoroutine(AnimateButton());
         }
     }

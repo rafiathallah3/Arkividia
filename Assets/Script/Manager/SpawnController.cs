@@ -16,6 +16,14 @@ public class SpawnController : MonoBehaviour
     [SerializeField] private Vector3 doorEntryOffset = new Vector3(0, -5, 0);
     [SerializeField] private float playerSpawnDuration = 1.0f;
 
+    void Start()
+    {
+        if(spawnPoint == null)
+        {
+            spawnPoint = GameObject.Find("PosisiPintu").transform;
+        }
+    }
+
     public void StartLevelSequence()
     {
         StartCoroutine(CutsceneRoutine());
@@ -35,11 +43,17 @@ public class SpawnController : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / doorEntryDuration);
-            float smoothT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2; // Sine Ease In Out
+            float smoothT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2;
             doorInstance.transform.position = Vector3.Lerp(startPos, targetPos, smoothT);
             yield return null;
         }
         doorInstance.transform.position = targetPos;
+
+        AudioSource doorAudio = doorInstance.GetComponent<AudioSource>();
+        if (doorAudio != null)
+        {
+            doorAudio.Play();
+        }
 
         yield return new WaitForSeconds(doorOpenWaitTime);
 
@@ -54,7 +68,7 @@ public class SpawnController : MonoBehaviour
             {
                 elapsed += Time.deltaTime;
                 float t = Mathf.Clamp01(elapsed / doorOpenDuration);
-                float smoothT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2; // Sine Ease In Out
+                float smoothT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2;
                 pivot.localScale = Vector3.Lerp(startScale, targetScale, smoothT);
                 yield return null;
             }
@@ -85,7 +99,7 @@ public class SpawnController : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / doorShrinkDuration);
-            float smoothT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2; // Sine Ease In Out
+            float smoothT = -(Mathf.Cos(Mathf.PI * t) - 1) / 2;
             doorInstance.transform.localScale = Vector3.Lerp(doorStartScale, doorTargetScale, smoothT);
             yield return null;
         }

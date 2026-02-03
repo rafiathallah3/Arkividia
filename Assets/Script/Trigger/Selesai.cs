@@ -9,6 +9,13 @@ public class Selesai : MonoBehaviour
 
     public string namaSceneLoad;
 
+    AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -16,6 +23,7 @@ public class Selesai : MonoBehaviour
             Pemain player = other.GetComponent<Pemain>();
             if (player != null)
             {
+                audioSource.Play();
                 StartCoroutine(SuckInPlayer(player));
             }
         }
@@ -28,7 +36,6 @@ public class Selesai : MonoBehaviour
         Vector3 startPosition = player.transform.position;
         Vector3 endPosition = transform.position;
         Vector3 startScale = player.transform.localScale;
-        Quaternion startRotation = player.transform.rotation;
 
         float elapsed = 0f;
 

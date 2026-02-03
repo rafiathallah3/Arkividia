@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     private SpawnController spawnController;
     private LevelConfig levelConfig;
     public GameObject CanvasUtamaUI;
+    public AudioSource sfxAudioSource;
+    public AudioSource ambientAudioSource;
+    public AudioSource OSTAudioSource;
 
     public static GameManager instance;
     void Start()
@@ -34,6 +37,11 @@ public class GameManager : MonoBehaviour
         if (spawnController != null)
         {
             StartLevelSequence();
+        }
+
+        if(OSTAudioSource != null)
+        {
+            OSTAudioSource.Play();
         }
     }
 
