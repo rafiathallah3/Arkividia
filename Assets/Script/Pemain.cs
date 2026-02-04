@@ -359,7 +359,6 @@ public class Pemain : MonoBehaviour
 
         KameraController.Instance.ResetCamera();
 
-        // Wait for camera to finish moving with timeout
         float timeout = 5.0f;
         float elapsed = 0f;
         while (!KameraController.Instance.IsAtTarget && elapsed < timeout)
@@ -369,7 +368,6 @@ public class Pemain : MonoBehaviour
         }
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        // GameManager.instance.StartLevelSequence();
     }
 
     private IEnumerator SpawnSequence(float duration, bool autoEnableControl)

@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f4aa9d521f5af479e77e018cf79ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  HancurSetelahKena: 0
 --- !u!96 &5463598381026124730
 TrailRenderer:
   serializedVersion: 4

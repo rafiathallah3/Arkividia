@@ -45,6 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b98ee6ca1c5b5054da435250e05c3918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  shootAwake: 0
+  repeatShooting: 0
+  shootingInterval: 1.5
+  useStartDelay: 0
+  randomizeStartDelay: 0
+  startShootingDelay: 0
   bulletPrefab: {fileID: 1216621001252412048, guid: fec159eb6fa0a6e4a923b4c81b01e96d, type: 3}
   bulletSpeed: 25
   bulletLifeTime: 5
@@ -70,7 +76,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -107,7 +113,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -122,7 +128,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.07777778
       inSlope: 0
       outSlope: 0
       tangentMode: 0

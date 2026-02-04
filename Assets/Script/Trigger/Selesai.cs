@@ -6,6 +6,7 @@ public class Selesai : MonoBehaviour
 {
     [SerializeField] private float suckDuration = 2.0f;
     [SerializeField] private float rotationSpeed = 360f;
+    [SerializeField] private string kameraSelesaiName = "KameraSelesai";
 
     public string namaSceneLoad;
 
@@ -56,9 +57,26 @@ public class Selesai : MonoBehaviour
         player.transform.position = endPosition;
         player.transform.localScale = Vector3.zero;
 
-        if(namaSceneLoad != "")
+        GameObject kameraSelesai = GameObject.Find(kameraSelesaiName);
+        if (kameraSelesai != null)
         {
-            SceneManager.LoadScene(namaSceneLoad);       
+            KameraController.Instance.SetOverrideTarget(kameraSelesai.transform);
+
+            while (!KameraController.Instance.IsAtTarget)
+            {
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(2.5f);
+        }
+        else
+        {
+            Debug.LogWarning($"Object '{kameraSelesaiName}' not found!");
+        }
+
+        if (namaSceneLoad != "")
+        {
+            SceneManager.LoadScene(namaSceneLoad);
         }
     }
 }

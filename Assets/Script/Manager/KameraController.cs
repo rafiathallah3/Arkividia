@@ -143,8 +143,26 @@ public class KameraController : MonoBehaviour
         shakeOffset = Vector3.zero;
     }
 
+    private Transform overrideTarget;
+
+    public void SetOverrideTarget(Transform target)
+    {
+        overrideTarget = target;
+    }
+
+    public void ClearOverrideTarget()
+    {
+        overrideTarget = null;
+    }
+
     void LateUpdate()
     {
+        if (overrideTarget != null)
+        {
+            MoveTo(overrideTarget.position);
+            return;
+        }
+
         if (isShaking)
         {
             shakeOffset = Random.insideUnitSphere * shakeMagnitude;
@@ -212,7 +230,7 @@ public class KameraController : MonoBehaviour
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Pemain>();
         }
 
-        if(player.SudahMati)
+        if (player.SudahMati)
         {
             MoveTo(currentRoom.followMinPosition);
             return;

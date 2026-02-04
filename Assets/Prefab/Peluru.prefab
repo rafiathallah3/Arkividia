@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f4aa9d521f5af479e77e018cf79ed0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Duri
+  HancurSetelahKena: 1
 --- !u!58 &8271126032387031569
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -131,7 +132,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -6
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: 27b1073a5c7de944f8b313c42ced1c9f, type: 3}
   m_Color: {r: 1, g: 0.6544965, b: 0, a: 1}
