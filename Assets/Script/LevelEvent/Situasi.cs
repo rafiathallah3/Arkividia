@@ -83,4 +83,12 @@ public class Situasi : MonoBehaviour
             GameManager.instance.ambientAudioSource.Stop();
         }
     }
+
+    public void MainkanSuara(AudioSource audioSource)
+    {
+        if (audioSource != null)
+        {
+            audioSource.Play();
+        }
+    }
 }

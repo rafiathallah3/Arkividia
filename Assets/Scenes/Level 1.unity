@@ -168,6 +168,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: Careful
+  audioSource: {fileID: 0}
   events: []
 --- !u!61 &10034442
 BoxCollider2D:
@@ -1087,6 +1088,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: The platform will disappear
+  audioSource: {fileID: 0}
   events: []
 --- !u!61 &116881741
 BoxCollider2D:
@@ -5149,6 +5151,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: You will jump early
+  audioSource: {fileID: 0}
   events: []
 --- !u!61 &785684203
 BoxCollider2D:
@@ -5382,6 +5385,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: You will jump on to the spike
+  audioSource: {fileID: 0}
   events: []
 --- !u!61 &793053655
 BoxCollider2D:
@@ -10664,6 +10668,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: The portal is on the left
+  audioSource: {fileID: 0}
   events: []
 --- !u!61 &1721087327
 BoxCollider2D:
@@ -11231,6 +11236,7 @@ MonoBehaviour:
   TunjuinDialogLagi: 0
   textSpoiler: You jumped over it didn't you<slow>...</slow> It was safe you could've
     walked through it
+  audioSource: {fileID: 0}
   events: []
 --- !u!61 &1823935085
 BoxCollider2D:
@@ -12052,6 +12058,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: The button will be pressed
+  audioSource: {fileID: 0}
   events:
   - delay: 0
     onEventTriggered:
@@ -12126,6 +12133,7 @@ GameObject:
   - component: {fileID: 1989294083}
   - component: {fileID: 1989294085}
   - component: {fileID: 1989294084}
+  - component: {fileID: 1989294086}
   m_Layer: 7
   m_Name: 7
   m_TagString: Untagged
@@ -12164,6 +12172,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: 
+  audioSource: {fileID: 0}
   events:
   - delay: 0
     onEventTriggered:
@@ -12176,6 +12185,18 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 528146465}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 853951772}
+          m_TargetAssemblyTypeName: Situasi, Assembly-CSharp
+          m_MethodName: MainkanSuara
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 1989294086}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -12227,6 +12248,103 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 8.484954, y: 0.10978487}
   m_EdgeRadius: 0
+--- !u!82 &1989294086
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989294082}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 09a957d88c895e9418b701a00e9dcf4b, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.6
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 0
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.027777778
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &2000049442
 PrefabInstance:
   m_ObjectHideFlags: 0

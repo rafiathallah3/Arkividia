@@ -4993,6 +4993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   suckDuration: 2
   rotationSpeed: 360
+  kameraSelesaiName: KameraSelesai
   namaSceneLoad: 
 --- !u!114 &4185875117367274230
 MonoBehaviour:
@@ -5055,7 +5056,7 @@ AudioSource:
   m_GameObject: {fileID: 3333202078128651376}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -7151780336443002157, guid: da13e9d0789eb804c885426bbd4198e9, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 39ba40fcfd1144746b8dcf1d01a55bc1, type: 3}
   m_PlayOnAwake: 0

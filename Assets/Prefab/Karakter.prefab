@@ -245,6 +245,7 @@ MonoBehaviour:
   isControllable: 1
   landingParticleEffect: {fileID: 8876470187993445321, guid: a0764f9b1636a2041ba1c074ca01deb7, type: 3}
   deathParticleEffect: {fileID: 133028616980046116, guid: 654d94cd98780654b91439d211e01155, type: 3}
+  tambahanDeathParticle: {fileID: 0}
 --- !u!96 &8835324019602460229
 TrailRenderer:
   serializedVersion: 4
@@ -425,7 +426,7 @@ AudioSource:
   m_GameObject: {fileID: 1462850982996088315}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -7151780336443002157, guid: da13e9d0789eb804c885426bbd4198e9, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0

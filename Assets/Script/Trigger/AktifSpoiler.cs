@@ -11,6 +11,7 @@ public class AktifSpoiler : MonoBehaviour
 
     [Header("Settingan")]
     public string textSpoiler;
+    public AudioSource audioSource;
     public List<EventSituasi> events;
 
     void OnTriggerEnter2D(Collider2D collision)
