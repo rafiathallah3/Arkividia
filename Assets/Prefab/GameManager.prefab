@@ -49,11 +49,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e826fc177031cc4a816e18bcaeb5328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  ApakahDebug: 1
+  ApakahDebug: 0
   CanvasUtamaUI: {fileID: 0}
   sfxAudioSource: {fileID: 8403453624374086204}
   ambientAudioSource: {fileID: 8539227443850636255}
   OSTAudioSource: {fileID: 210686202179302199}
+  TunjuinPlatformSetelah2: {fileID: 0}
 --- !u!114 &5094423415409684738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +82,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e753aa23e86e7747a976313368009d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Situasi
+  doorPrefab: {fileID: 0}
+  doorEntryDuration: 1
+  doorOpenWaitTime: 0.5
+  doorOpenDuration: 1
+  doorEntryOffset: {x: 0, y: -5, z: 0}
 --- !u!82 &8403453624374086204
 AudioSource:
   m_ObjectHideFlags: 0
