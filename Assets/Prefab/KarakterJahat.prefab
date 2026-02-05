@@ -270,8 +270,9 @@ MonoBehaviour:
   knockbackDuration: 0.2
   flashDuration: 0.5
   phaseDialogues:
-  - <slow>I see...</slow>\nIf you want to play that way then...
-  - <slow>Why won't you give up...</slow>\nJust gone already.
+  - It's not worth to continue... \n Let's just stop here and go back to safety \n
+    The fun time is over \n You will die over and over again.
+  - <slow>Why won't you give up...</slow>
   - <slow>Why you...!</slow>\nYou will regret this!
   phaseEvents:
   - delay: 0
