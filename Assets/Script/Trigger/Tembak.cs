@@ -59,7 +59,10 @@ public class Tembak : MonoBehaviour
         }
 
         Transform spawnPoint = firePoint != null ? firePoint : transform;
-        audioSource.Play();
+        if(audioSource != null)
+        {
+            audioSource.Play();
+        }
 
         GameObject bullet = Instantiate(bulletPrefab, spawnPoint.position, spawnPoint.rotation);
         bullet.transform.rotation = fireRotation;

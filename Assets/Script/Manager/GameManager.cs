@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,12 @@ public class GameManager : MonoBehaviour
     public AudioSource sfxAudioSource;
     public AudioSource ambientAudioSource;
     public AudioSource OSTAudioSource;
+
+    public static bool cutscenePlayed = false;
+    public static bool cutscenePlayed2 = false;
+    private Boss BossInstance;
+
+    public GameObject TunjuinPlatformSetelah2;
 
     public static GameManager instance;
     void Start()
@@ -33,15 +40,42 @@ public class GameManager : MonoBehaviour
         dialogueManager = FindFirstObjectByType<DialogueManager>();
         spawnController = FindFirstObjectByType<SpawnController>();
         levelConfig = FindFirstObjectByType<LevelConfig>();
-
-        if (spawnController != null)
-        {
-            StartLevelSequence();
-        }
+        BossInstance = FindFirstObjectByType<Boss>();
 
         if(OSTAudioSource != null)
         {
             OSTAudioSource.Play();
+        }
+
+        if(SceneManager.GetActiveScene().name == "Level 4")
+        {
+            KamarKamera kamarKameraAwal = GameObject.Find("Kamar1").transform.GetChild(0).GetComponent<KamarKamera>();
+            if(cutscenePlayed)
+            {
+                BossInstance.currentHitCount++;
+                GameObject.Find("TempatCutsceen1").SetActive(false);
+                kamarKameraAwal.followMaxPosition = new Vector3(34f, 0f, 0f);
+                BossInstance.transform.position = new Vector3(19.75f, 7f, 0f);
+            }
+
+            if(cutscenePlayed2)
+            {
+                BossInstance.currentHitCount++;
+                kamarKameraAwal.transform.position = new Vector3(-24.8f, 10.85f, -10f);
+                Camera.main.transform.position = new Vector3(-24.8f, 10.85f, -10f);
+                GameObject.Find("PosisiPintu").transform.position = new Vector3(-24.88f, 6.16f, 0);
+                kamarKameraAwal.cameraMode = CameraMode.Fixed;
+                kamarKameraAwal.cameraCenter = kamarKameraAwal.transform;
+                BossInstance.transform.position = new Vector3(-35.42f, 9.224488f, 0f);
+                // KameraController.Instance.SetOverrideTarget(kamarKameraAwal.transform);
+                TunjuinPlatformSetelah2.SetActive(true);
+                // KameraController.Instance.ClearOverrideTarget();
+            }
+        }
+
+        if (spawnController != null)
+        {
+            StartLevelSequence();
         }
     }
 

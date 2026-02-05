@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 661485945734360063}
   - component: {fileID: 1619114545722480879}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pintu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 786364135574437978}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -173,7 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1944007967611926337}
   - component: {fileID: 7599161248072530335}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Belakang
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 559536380772897849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Depan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,7 +296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2649333864956795424}
   - component: {fileID: 6852545711829191084}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

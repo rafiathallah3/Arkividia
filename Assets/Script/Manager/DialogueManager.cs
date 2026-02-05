@@ -1,6 +1,8 @@
-using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using System.Collections;
+using Unity.VisualScripting;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -48,7 +50,7 @@ public class DialogueManager : MonoBehaviour
         // ShowDialogue("AAAAAAAAAAAAAAAAAAAAAAA Testing <slow>slow</slow> and <fast>fast</fast> speeds.");
     }
 
-    public void ShowDialogue(string text, bool stopPlayer = false)
+    public void ShowDialogue(string text, bool stopPlayer = false, System.Action onComplete = null, Color? outlineColor = null)
     {
         dialoguePanel.SetActive(true);
         KameraController.Instance.DarkenBackground();
@@ -72,13 +74,28 @@ public class DialogueManager : MonoBehaviour
         isPanelActive = true;
 
         StopAllCoroutines();
-        StartCoroutine(PlayDialogueSequence(text, skipSlideIn, stopPlayer));
+        StartCoroutine(PlayDialogueSequence(text, skipSlideIn, stopPlayer, onComplete, outlineColor));
     }
 
     public event System.Action OnDialogueFinished;
 
-    IEnumerator PlayDialogueSequence(string text, bool skipSlideIn, bool stopPlayer)
+    IEnumerator PlayDialogueSequence(string text, bool skipSlideIn, bool stopPlayer, System.Action onComplete, Color? outlineColor)
     {
+        Outline panelOutline = dialoguePanel.GetComponent<Outline>();
+        Color originalOutlineColor = Color.white; 
+
+        if (panelOutline != null)
+        {
+            originalOutlineColor = panelOutline.effectColor;
+            if (outlineColor.HasValue)
+            {
+                panelOutline.effectColor = outlineColor.Value;
+                dialoguePanel.transform.Find("Image").gameObject.SetActive(false);
+            }
+        }
+
+        string[] lines = text.Replace("\\n", "\n").Split('\n');
+
         dialogueText.text = "";
 
         if (blinkingCursor != null) blinkingCursor.gameObject.SetActive(false);
@@ -98,10 +115,18 @@ public class DialogueManager : MonoBehaviour
             blinkCoroutine = StartCoroutine(BlinkCursorRoutine());
         }
 
-        yield return StartCoroutine(TypeSentence(text));
+        for (int i = 0; i < lines.Length; i++)
+        {
+            yield return StartCoroutine(TypeSentence(lines[i]));
 
-        yield return new WaitForSeconds(autoHideDelay);
+            yield return new WaitForSeconds(autoHideDelay);
 
+            if (i < lines.Length - 1)
+            {
+                yield return StartCoroutine(DeleteDialogue());
+            }
+        }
+        
         if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
         if (blinkingCursor != null) blinkingCursor.gameObject.SetActive(false);
 
@@ -116,7 +141,57 @@ public class DialogueManager : MonoBehaviour
             player.isControllable = true;
         }
 
+        if (panelOutline != null && outlineColor.HasValue)
+        {
+            panelOutline.effectColor = originalOutlineColor;
+        }
+
+        onComplete?.Invoke();
         OnDialogueFinished?.Invoke();
+    }
+
+    IEnumerator DeleteDialogue()
+    {
+        int totalChars = dialogueText.textInfo.characterCount;
+        
+        while (totalChars > 0)
+        {
+            totalChars--;
+            dialogueText.maxVisibleCharacters = totalChars;
+            dialogueText.ForceMeshUpdate();
+
+            UpdateCursorPosition(totalChars - 1);
+
+            if (typingSound != null && GameManager.instance != null && GameManager.instance.sfxAudioSource != null)
+            {
+                GameManager.instance.sfxAudioSource.PlayOneShot(typingSound);
+            }
+            
+            yield return new WaitForSeconds(typingSpeed / 2f); // Delete faster than typing
+        }
+
+        dialogueText.text = "";
+        dialogueText.maxVisibleCharacters = 99999;
+    }
+
+    void UpdateCursorPosition(int charIndex)
+    {
+        if (blinkingCursor != null)
+        {
+            TMP_TextInfo textInfo = dialogueText.textInfo;
+            
+            if (charIndex >= 0 && charIndex < textInfo.characterInfo.Length)
+            {
+                TMP_CharacterInfo charInfo = textInfo.characterInfo[charIndex];
+
+                if (charInfo.isVisible)
+                {
+                    Vector3 charPos = charInfo.bottomRight;
+                    Vector3 worldPos = dialogueText.transform.TransformPoint(charPos);
+                    blinkingCursor.position = worldPos + cursorOffset;
+                }
+            }
+        }
     }
 
     IEnumerator SlidePanel(Vector2 start, Vector2 end)

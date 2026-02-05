@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Selesai : MonoBehaviour
@@ -7,6 +8,11 @@ public class Selesai : MonoBehaviour
     [SerializeField] private float suckDuration = 2.0f;
     [SerializeField] private float rotationSpeed = 360f;
     [SerializeField] private string kameraSelesaiName = "KameraSelesai";
+
+    [Header("End Game Settings")]
+    [SerializeField] private GameObject blackBackground;
+    [SerializeField] private float fadeDuration = 5f;
+    [SerializeField] private float waitBeforeDialogue = 2f;
 
     public string namaSceneLoad;
 
@@ -57,26 +63,62 @@ public class Selesai : MonoBehaviour
         player.transform.position = endPosition;
         player.transform.localScale = Vector3.zero;
 
-        GameObject kameraSelesai = GameObject.Find(kameraSelesaiName);
-        if (kameraSelesai != null)
-        {
-            KameraController.Instance.SetOverrideTarget(kameraSelesai.transform);
-
-            while (!KameraController.Instance.IsAtTarget)
-            {
-                yield return null;
-            }
-
-            yield return new WaitForSeconds(2.5f);
-        }
-        else
-        {
-            Debug.LogWarning($"Object '{kameraSelesaiName}' not found!");
-        }
-
         if (namaSceneLoad != "")
         {
-            SceneManager.LoadScene(namaSceneLoad);
+            if(namaSceneLoad == "Selesai")
+            {
+                StartCoroutine(EndGameSequence());
+            } else {
+                GameObject kameraSelesai = GameObject.Find(kameraSelesaiName);
+                if (kameraSelesai != null)
+                {
+                    KameraController.Instance.SetOverrideTarget(kameraSelesai.transform);
+
+                    while (!KameraController.Instance.IsAtTarget)
+                    {
+                        yield return null;
+                    }
+
+                    yield return new WaitForSeconds(2.5f);
+                }
+                else
+                {
+                    Debug.LogWarning($"Object '{kameraSelesaiName}' not found!");
+                }
+                SceneManager.LoadScene(namaSceneLoad);
+            }
+        }
+    }
+    private IEnumerator EndGameSequence()
+    {
+        if (blackBackground != null)
+        {
+            blackBackground.SetActive(true);
+            Image img = blackBackground.GetComponent<Image>();
+            if (img != null)
+            {
+                Color c = img.color;
+                c.a = 0f;
+                img.color = c;
+
+                float elapsed = 0f;
+                while (elapsed < fadeDuration)
+                {
+                    elapsed += Time.deltaTime;
+                    c.a = Mathf.Lerp(0f, 1f, elapsed / fadeDuration);
+                    img.color = c;
+                    yield return null;
+                }
+                c.a = 1f;
+                img.color = c;
+            }
+        }
+        
+        yield return new WaitForSeconds(waitBeforeDialogue);
+
+        if (DialogueManager.instance != null)
+        {
+             DialogueManager.instance.ShowDialogue("Thank you for playing.", false, null, Color.cyan);
         }
     }
 }

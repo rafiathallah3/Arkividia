@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Unity.VisualScripting;
 
 public class KameraController : MonoBehaviour
 {
@@ -229,7 +230,7 @@ public class KameraController : MonoBehaviour
             }
             player = GameObject.FindGameObjectWithTag("Player").GetComponent<Pemain>();
         }
-
+        
         if (player.SudahMati)
         {
             MoveTo(currentRoom.followMinPosition);

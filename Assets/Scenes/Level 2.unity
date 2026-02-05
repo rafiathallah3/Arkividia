@@ -11344,6 +11344,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: There are no spike down there
+  audioSource: {fileID: 0}
   events: []
 --- !u!61 &700024557
 BoxCollider2D:
@@ -12193,6 +12194,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: Something will happen if you step on the floor in 3 seconds.
+  audioSource: {fileID: 0}
   events:
   - delay: 3
     onEventTriggered:
@@ -13544,6 +13546,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 1
   TunjuinDialogLagi: 0
   textSpoiler: 
+  audioSource: {fileID: 0}
   events:
   - delay: 0
     onEventTriggered:
@@ -15531,7 +15534,9 @@ MonoBehaviour:
   apakahSudahAktif: 0
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
-  textSpoiler: There are two portals. One is <slow>fake.</slow>
+  textSpoiler: There are two portals. One is <slow>fake.</slow> The right one is
+    real.
+  audioSource: {fileID: 0}
   events:
   - delay: 3
     onEventTriggered:
@@ -21021,6 +21026,7 @@ MonoBehaviour:
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
   textSpoiler: There are 3 buttons that will be pressed
+  audioSource: {fileID: 0}
   events:
   - delay: 3
     onEventTriggered:

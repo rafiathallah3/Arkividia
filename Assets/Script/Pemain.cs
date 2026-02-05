@@ -8,6 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class Pemain : MonoBehaviour
 {
     public bool SudahMati = false;
+    bool SudahMatiSementara = false;
 
     [Header("Movement Settings")]
     [SerializeField] private float kecepatan = 5f;
@@ -69,6 +70,7 @@ public class Pemain : MonoBehaviour
     TrailRenderer[] trails;
 
     private bool isDashing;
+    public bool IsDashing => isDashing;
     private bool canDash = true;
     private float facingDirection = 1f;
     private Vector3 originalScale;
@@ -95,8 +97,8 @@ public class Pemain : MonoBehaviour
 
     public void Die()
     {
-        if (SudahMati) return;
-        SudahMati = true;
+        if (SudahMati || SudahMatiSementara) return;
+        SudahMatiSementara = true;
         isControllable = false;
         rb.linearVelocity = Vector2.zero;
         rb.simulated = false;
@@ -117,7 +119,7 @@ public class Pemain : MonoBehaviour
         sprite.gameObject.SetActive(false);
         trailRenderer.enabled = false;
         light.enabled = false;
-        StartCoroutine(TungguMati(1f));
+        StartCoroutine(TungguMati(2f));
     }
 
     private void Jump()
@@ -180,7 +182,7 @@ public class Pemain : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && canDash)
         {
-            StartCoroutine(DashCoroutine());
+            TriggerDash();
         }
 
         if (Input.GetKeyDown(KeyCode.W) && isGrounded)
@@ -219,7 +221,9 @@ public class Pemain : MonoBehaviour
         Quaternion targetRotation = Quaternion.Euler(0, 0, targetTilt);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, tiltSpeed * Time.fixedDeltaTime);
 
-        CheckForCrush();
+        if(SceneManager.GetActiveScene().name == "Level 3") { //Jangan tanya kenapa harus cek hanya di level 3, pokoknya CheckCrush() ini agak bemasalah
+            CheckForCrush();
+        }
     }
 
     private void CheckForCrush()
@@ -258,6 +262,11 @@ public class Pemain : MonoBehaviour
     {
         if (hit.collider == null) return false;
         return ((1 << hit.collider.gameObject.layer) & safeCrushLayer) != 0;
+    }
+
+    public void TriggerDash()
+    {
+        StartCoroutine(DashCoroutine());
     }
 
     private IEnumerator DashCoroutine()
@@ -357,6 +366,7 @@ public class Pemain : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
+        SudahMati = true;
         KameraController.Instance.ResetCamera();
 
         float timeout = 5.0f;
