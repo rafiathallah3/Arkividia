@@ -1897,6 +1897,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Selesai
       objectReference: {fileID: 0}
+    - target: {fileID: 7830049858366204517, guid: 5d69607431383514fbcae9c9d4790ffc, type: 3}
+      propertyPath: namaSceneLoad
+      value: Level 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2667,7 +2671,7 @@ MonoBehaviour:
   apakahSudahAktif: 0
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
-  textSpoiler: Stay still on the first left platfrom
+  textSpoiler: Stay still on the first left platform
   audioSource: {fileID: 0}
   events:
   - delay: 0
