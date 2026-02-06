@@ -2480,7 +2480,8 @@ MonoBehaviour:
   apakahSudahAktif: 0
   bisaDiUlanginEvent: 0
   TunjuinDialogLagi: 0
-  textSpoiler: Mantap
+  textSpoiler: It's not worth to continue... \n Let's just stop here and go back
+    to safety \n The fun time is over \n You will die over and over again.
   audioSource: {fileID: 0}
   events:
   - delay: 0
@@ -9552,12 +9553,12 @@ Transform:
   m_GameObject: {fileID: 660861661}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -24.8, y: 10.85, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1822588400}
-  m_Father: {fileID: 733299937}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &664325589
 PrefabInstance:
@@ -10732,7 +10733,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 660861662}
   - {fileID: 281130136}
   - {fileID: 1680681641}
   - {fileID: 1286370253}
@@ -28452,6 +28452,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1045529102}
     - target: {fileID: 2030085106868735368, guid: 72748b59add77c7478cbcb3bd9dde808, type: 3}
+      propertyPath: 'phaseDialogues.Array.data[0]'
+      value: '<slow>I see...</slow>\nIf you want to play that way then...
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030085106868735368, guid: 72748b59add77c7478cbcb3bd9dde808, type: 3}
       propertyPath: phaseEvents.Array.data[0].onEventTriggered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 853951772}
@@ -28541,6 +28547,7 @@ SceneRoots:
   - {fileID: 853951771}
   - {fileID: 1905914993}
   - {fileID: 619394802}
+  - {fileID: 660861662}
   - {fileID: 1534190095}
   - {fileID: 1442799254}
   - {fileID: 1144259401}

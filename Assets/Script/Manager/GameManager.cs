@@ -62,11 +62,11 @@ public class GameManager : MonoBehaviour
             {
                 BossInstance.currentHitCount++;
                 kamarKameraAwal.transform.position = new Vector3(-24.8f, 10.85f, -10f);
-                Camera.main.transform.position = new Vector3(-24.8f, 10.85f, -10f);
-                GameObject.Find("PosisiPintu").transform.position = new Vector3(-24.88f, 6.16f, 0);
                 kamarKameraAwal.cameraMode = CameraMode.Fixed;
                 kamarKameraAwal.cameraCenter = kamarKameraAwal.transform;
+                GameObject.Find("PosisiPintu").transform.position = new Vector3(-24.88f, 6.16f, 0);
                 BossInstance.transform.position = new Vector3(-35.42f, 9.224488f, 0f);
+                Camera.main.transform.position = new Vector3(-24.8f, 10.85f, -10f);
                 // KameraController.Instance.SetOverrideTarget(kamarKameraAwal.transform);
                 TunjuinPlatformSetelah2.SetActive(true);
                 // KameraController.Instance.ClearOverrideTarget();
