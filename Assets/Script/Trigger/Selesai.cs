@@ -11,8 +11,10 @@ public class Selesai : MonoBehaviour
 
     [Header("End Game Settings")]
     [SerializeField] private GameObject blackBackground;
+    [SerializeField] private GameObject endGameButtons;
     [SerializeField] private float fadeDuration = 5f;
     [SerializeField] private float waitBeforeDialogue = 2f;
+    [SerializeField] private string menuSceneName = "Menu";
 
     public string namaSceneLoad;
 
@@ -65,10 +67,12 @@ public class Selesai : MonoBehaviour
 
         if (namaSceneLoad != "")
         {
-            if(namaSceneLoad == "Selesai")
+            if (namaSceneLoad == "Selesai")
             {
                 StartCoroutine(EndGameSequence());
-            } else {
+            }
+            else
+            {
                 GameObject kameraSelesai = GameObject.Find(kameraSelesaiName);
                 if (kameraSelesai != null)
                 {
@@ -113,12 +117,28 @@ public class Selesai : MonoBehaviour
                 img.color = c;
             }
         }
-        
+
         yield return new WaitForSeconds(waitBeforeDialogue);
 
         if (DialogueManager.instance != null)
         {
-             DialogueManager.instance.ShowDialogue("Thank you for playing.", false, null, Color.cyan);
+            DialogueManager.instance.ShowDialogue("Thank you for playing.", false, () =>
+            {
+                if (endGameButtons != null)
+                {
+                    endGameButtons.SetActive(true);
+                }
+            }, Color.cyan);
         }
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene(menuSceneName);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
