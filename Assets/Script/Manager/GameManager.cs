@@ -108,12 +108,7 @@ public class GameManager : MonoBehaviour
             };
 
             dialogueManager.OnDialogueFinished += onDialogueFinished;
-            dialogueManager.ShowDialogue(levelConfig.introDialogueText);
-
-            if (ApakahDebug)
-            {
-                player.isControllable = true;
-            }
+            dialogueManager.ShowDialogue(levelConfig.introDialogueText, !ApakahDebug);
         }
         else if (player != null)
         {
